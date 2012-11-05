@@ -14,15 +14,14 @@ def checkRedirect(url):
     try:
         urlObj = urlparse(url)
         conn = httplib.HTTPConnection(urlObj.netloc)
-        conn.request("HEAD", url.lstrip(urlObj.scheme).lstrip('://').lstrip(urlObj.netloc)
-)
+        agent = { 'User-Agent' : 'Mozilla/5.0' }
+        conn.request("HEAD", url.lstrip(urlObj.scheme).lstrip('://').lstrip(urlObj.netloc), headers=agent)
         res = conn.getresponse()
         returl = [x[1] for x in res.getheaders() if x[0] == 'location'][0]
-        
-        if res.status == 301:
-            return checkRedirect(returl)
+        if returl == url:
+            return returl
         else:
-            return url
+            return checkRedirect(returl)
     except Exception, e:
         return url
 
