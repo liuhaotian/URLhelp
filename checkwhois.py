@@ -35,7 +35,7 @@ def checkWhois(url):
             create_date = parser.parse('1970-01-01 00:00:00')
         
 
-        return create_date, update_date, expire_date
+        return dict([('expire_date', expire_date), ('update_date', update_date), ('create_date', create_date)])
     except Exception, e:
         return url
 
