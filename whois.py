@@ -13,7 +13,7 @@ def whois(domain, host = None):
     if host is None:
         HOST = domain.rsplit('.',1)[1] + '.whois-servers.net'
     else:
-        HOST = 'whois.verisign-grs.com'
+        HOST = host
     PORT = 43 
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
