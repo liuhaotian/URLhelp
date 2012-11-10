@@ -14,13 +14,13 @@ def whois(domain):
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((HOST, PORT))
-    s.sendall(domain + '\r\n')
+    s.sendall('=' + domain + '\r\n')
     data = s.recv(65536) + s.recv(65536)
     s.close()
     return data
 
 def main():
-    print whois('aa.com')
+    print whois('t.co')
 
 if __name__ == '__main__':
     main()
