@@ -12,11 +12,14 @@ class LexicalFeature:
   
   def GetFeature(self):
     file_input=open(self.path)
-    file_output=open("/home/zyqu/Courses/MachineLearning/groupproj/LexicalFeatures","w")
+    #file_output=open("/home/zyqu/Courses/MachineLearning/groupproj/LexicalFeatures","w")
+    file_output=open("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/LexicalFeatures","w")
+
     try:
       list_of_all_the_lines = file_input.readlines()
       for line in list_of_all_the_lines:
         urlline=line.lower()
+        urlline=urlline.strip()
         #print urlline
         if urlline.find("http://")>=0:
           urlline=urlline[7:]
@@ -50,13 +53,18 @@ class LexicalFeature:
         file_output.write(' ')
         file_output.write(TLD)
         file_output.write(' ')
+        #print bagofwordsinhost
+        #print bagofwordsinpath
         for elem in bagofwordsinhost:
-          file_output.write(elem)
-          file_output.write(' ')
+          if elem != '':
+            file_output.write(elem)
+            file_output.write(' ')
         for elem in bagofwordsinpath:
-          file_output.write(elem)
-          #file_output.write(' ')
-        #file_output.write('\n')
+          if elem != '':
+            file_output.write(elem)
+            #if elem != bagofwordsinpath[len(bagofwordsinpath)-1]: 
+            file_output.write(' ')
+        file_output.write('\n')
 
 
     finally:					
@@ -93,5 +101,6 @@ class LexicalFeature:
 
 if __name__=="__main__":
   #give the file name below
-  lexfeatures=LexicalFeature("/home/zyqu/Courses/MachineLearning/groupproj/new_list")
+  #lexfeatures=LexicalFeature("/home/zyqu/Courses/MachineLearning/groupproj/new_list")
+  lexfeatures=LexicalFeature("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/new_list")
   lexfeatures.GetFeature()
