@@ -2,7 +2,7 @@
 
 #Zhengyang Qu,
 #Department of EECS, Northwestern University
-#11/18/2011
+#11/25/2011
 #make sure setting the dir of input/output file before using the program
 
 class LexicalFeature:
@@ -28,7 +28,10 @@ class LexicalFeature:
         if urlline.find('/')>0:
           hostportion=urlline[:urlline.find('/')]
           pathportion=urlline[urlline.find('/')+1:]
-       
+        if urlline.find('/')<=0:
+          hostportion=urlline
+          pathportion=""
+          
         # the length of host portion
         lenhost=len(hostportion) 
         
@@ -79,6 +82,10 @@ class LexicalFeature:
         #get the longest path token length
         longestpathtokenlength=self.GetLongestTokenLength(bagofwordsinpath)
         
+        #get whether the url contains brands in position other than SLD
+        brandpresence=self.isBrandPresence(bagofwordsinhost,bagofwordsinpath)
+        
+        
         
         outstr = "%s"%lenhost
         file_output.write(outstr)
@@ -107,6 +114,9 @@ class LexicalFeature:
         file_output.write(outstr)
         file_output.write(' ')
         outstr = "%s"%longestpathtokenlength
+        file_output.write(outstr)
+        file_output.write(' ')
+        outstr = "%s"%brandpresence
         file_output.write(outstr)
         file_output.write(' ')
       
@@ -185,7 +195,31 @@ class LexicalFeature:
       if len(elem)>maxlength:
         maxlength=len(elem)
     return maxlength
-
+    
+  def isBrandPresence(self, hostpart, pathpart):
+    #branddictionary=open("/Users/quzhengyang/Study/MachineLearning/group_proj/LexcialExtraction/brand","r")
+    branddictionary=open("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/brand","r")
+    flag=0
+    try:
+      allbrands = branddictionary.readlines()
+      pathpart=set(pathpart)
+      if len(hostpart)>3:
+        prehost=hostpart[:len(hostpart)-3]
+        prehost=set(prehost)
+      if len(hostpart)<4:
+        prehost=set()
+      for onebrand in allbrands:
+        onebrand=onebrand.lower()
+        onebrand=onebrand.strip()
+        if onebrand in pathpart:
+          flag = 1
+        if onebrand in prehost:
+          flag=1   
+    finally:
+      return flag
+      branddictionary.close()
+      
+      
 if __name__=="__main__":
   #give the file name below
   #lexfeatures=LexicalFeature("/home/zyqu/Courses/MachineLearning/groupproj/new_list")
