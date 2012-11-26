@@ -119,16 +119,20 @@ class LexicalFeature:
         outstr = "%s"%brandpresence
         file_output.write(outstr)
         file_output.write(' ')
-      
-        #for elem in bagofwordsinhost:
-          #if elem != '':
-            #file_output.write(elem)
-            #file_output.write(' ')
-        #for elem in bagofwordsinpath:
-          #if elem != '':
-            #file_output.write(elem)
+
+        for elem in bagofwordsinhost:
+          if elem != '':
+            file_output.write('<1,')
+            file_output.write(elem)
+            file_output.write('>')
+            file_output.write(' ')
+        for elem in bagofwordsinpath:
+          if elem != '':
+            file_output.write('<2,')
+            file_output.write(elem)
+            file_output.write('>')
             #if elem != bagofwordsinpath[len(bagofwordsinpath)-1]: 
-            #file_output.write(' ')
+            file_output.write(' ')
        
         file_output.write('\n')
 
