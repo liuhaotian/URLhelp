@@ -10,7 +10,7 @@
 from urlparse import urlparse
 import dns.resolver
 
-def checkIP(url):
+def checkNS(url):
     try:
         urlObj  = urlparse(url)
         return len(dns.resolver.query(urlObj.netloc, 'NS'))
@@ -18,9 +18,9 @@ def checkIP(url):
         return 0
 
 def main():
-    print checkIP('http://twitter.com/cnnbrk')
+    print checkNS('http://twitter.com/cnnbrk')
     print '=' * 50
-    print checkIP('http://t.co/xdBHUbHc')
+    print checkNS('http://t.co/xdBHUbHc')
 
 if __name__ == '__main__':
     main()
