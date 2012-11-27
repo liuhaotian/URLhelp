@@ -5,6 +5,9 @@
 #11/25/2011
 #make sure setting the dir of input/output file before using the program
 
+import urllib2
+import re
+
 class LexicalFeature:
   def __init__(self,path):
     self.path=path
@@ -12,19 +15,28 @@ class LexicalFeature:
   
   def GetFeature(self):
     file_input=open(self.path)
-    #file_output=open("/home/zyqu/Courses/MachineLearning/groupproj/LexicalFeatures","w")
-    file_output=open("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/LexicalFeatures","w")
+    #file_output=open("/Users/quzhengyang/Study/MachineLearning/group_proj/LexcialExtraction/LexicalFeatures","w")
+    #file_output=open("/home/zyqu/MachineLearning/group_proj/URLhelp/BenighLexicalFeatures","w")
+    #file_output=open("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/LexicalFeatures","w")
+    #file_output=open("/home/zyqu/MachineLearning/group_proj/URLhelp/LexicalFeatures","w")
+    file_output=open("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/BenighLexicalFeatures","w")
 
     try:
       list_of_all_the_lines = file_input.readlines()
       for line in list_of_all_the_lines:
+        line=self.decoding(line)
         urlline=line.lower()
         urlline=urlline.strip()
-        #print urlline
+        containIP=1
+        p=re.compile('[0-9]{3}(?:\.[0-9]+){3}')
+        if p.search(urlline)==None:
+          containIP=0
         if urlline.find("http://")>=0:
           urlline=urlline[7:]
         if urlline.find("https://")>=0:
           urlline=urlline[8:]
+        if urlline.find("www.")==0:
+          urlline=urlline[4:]
         if urlline.find('/')>0:
           hostportion=urlline[:urlline.find('/')]
           pathportion=urlline[urlline.find('/')+1:]
@@ -50,9 +62,13 @@ class LexicalFeature:
         
         #get the bag-of-words in host portion
         bagofwordsinhost=self.GetBagofWords(hostportion)
-        
         #get the bag-of-words in path portion
         bagofwordsinpath=self.GetBagofWords(pathportion)
+        
+        # make sure whether url tokes contain sensitive key words
+        containKeyW=0
+        if self.containkeyword(bagofwordsinhost)==1 or self.containkeyword(bagofwordsinpath)==1:
+          containKeyW=1
         
         #get the count of domain token
         domaintokencount=self.GetTokenCount(self.GetDomainToken(bagofwordsinhost))
@@ -60,7 +76,6 @@ class LexicalFeature:
          
         #get the path token count
         pathtokencount=self.GetTokenCount(bagofwordsinpath)
-        
         #get the average domain token length
         if domaintokencount==0:
           avrdomaintokenlength=0
@@ -84,6 +99,8 @@ class LexicalFeature:
         
         #get whether the url contains brands in position other than SLD
         brandpresence=self.isBrandPresence(bagofwordsinhost,bagofwordsinpath)
+        
+
         
         
         
@@ -117,6 +134,12 @@ class LexicalFeature:
         file_output.write(outstr)
         file_output.write(' ')
         outstr = "%s"%brandpresence
+        file_output.write(outstr)
+        file_output.write(' ')
+        outstr = "%s"%containIP
+        file_output.write(outstr)
+        file_output.write(' ')
+        outstr = "%s"%containKeyW
         file_output.write(outstr)
         file_output.write(' ')
 
@@ -203,6 +226,7 @@ class LexicalFeature:
   def isBrandPresence(self, hostpart, pathpart):
     #branddictionary=open("/Users/quzhengyang/Study/MachineLearning/group_proj/LexcialExtraction/brand","r")
     branddictionary=open("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/brand","r")
+    #branddictionary=open("/home/zyqu/MachineLearning/group_proj/URLhelp/brand","r")
     flag=0
     try:
       allbrands = branddictionary.readlines()
@@ -223,9 +247,33 @@ class LexicalFeature:
       return flag
       branddictionary.close()
       
+  def decoding(self, s):
+    s=urllib2.unquote(s)
+    s=self.unescape(s)
+    return s
+      
+  def unescape(self, s):
+    s = s.replace("&lt;", "<")
+    s = s.replace("&gt;", ">")
+    # this has to be last:
+    s = s.replace("&amp;", "&")
+    return s
+    
+  def containkeyword(self, bagofwords):
+    label=0
+    keywords=['confirm', 'account', 'banking', 'secure','ebayisapi','webscr','login','signin']
+    keywords=set(keywords)
+    for elem in bagofwords:
+      if elem in keywords:
+        label=1
+    return label
+
+      
       
 if __name__=="__main__":
   #give the file name below
-  #lexfeatures=LexicalFeature("/home/zyqu/Courses/MachineLearning/groupproj/new_list")
-  lexfeatures=LexicalFeature("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/new_list")
+  #lexfeatures=LexicalFeature("/Users/quzhengyang/Study/MachineLearning/group_proj/LexcialExtraction/testurl")
+  #lexfeatures=LexicalFeature("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/new_list")
+  #lexfeatures=LexicalFeature("/home/zyqu/MachineLearning/group_proj/URLhelp/benign_list")
+  lexfeatures=LexicalFeature("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/benign_list")
   lexfeatures.GetFeature()
