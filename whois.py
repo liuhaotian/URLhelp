@@ -27,7 +27,14 @@ def whois(domain, host = None):
         data += s.recv(65536)
     s.close()
 
-    return findhost(data) is not None and whois(domain, findhost(data)) or "\"=xxx\"" in data and whois('=' + domain) or data
+    if "\"=xxx\"" in data:
+        return whois('domain ' + domain)
+    elif findhost(data) is not None and findhost(data) != host:
+        return data + '\n' + whois(domain, findhost(data))
+    else:
+        return data
+
+    #return findhost(data) is not None and whois(domain, findhost(data)) or "\"=xxx\"" in data and whois('=' + domain) or data
 
 def findhost(rawdata):
     whoisserv = [\
@@ -46,17 +53,18 @@ def findhost(rawdata):
     "whois.norid.no",\
     "whois.iana.org"]
     try:
-        server = re.search(r'Whois Server:[^\w]*([\.\w]*)',rawdata).groups()[0]
+        #server = re.search(r'Whois Server:[^\w]*([\.\w]*)',rawdata).groups()[0]
+        return re.search(r'Whois Server:[^\w]*([\.\w]*)',rawdata).groups()[0]
     except Exception, e:
         return None
-    
+'''
     if server in whoisserv:
         return server
     elif 'whois-servers' in server.rsplit('.'):
         return server
     else:
         return None
-
+'''
 
 def main():
     print whois('t.co')
