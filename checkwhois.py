@@ -37,11 +37,11 @@ def checkWhois(url):
             create_date = parser.parse('1970-01-01 00:00:00')
 
         try:
-            registrant  = re.search(r'[^@]*\ ([^\ ]+@[^\ ]+\.[\w]+)[\W]',retdata).groups()[0]
+            registrant  = re.search(r'[^@]*[\ :(]([^\ ^@]+@[^\ ^@^\.]+\.[\w\.]+)[\W]',retdata).groups()[0]
         except Exception, e:
-            registrant  = ''
+            registrant  = 'N/A'
         
-        if registrant  == '' and expire_date == parser.parse('1970-01-01 00:00:00') and update_date == parser.parse('1970-01-01 00:00:00') and create_date == parser.parse('1970-01-01 00:00:00') and len(urlObj.netloc.split('.')) > 1:
+        if registrant  == 'N/A' and expire_date == parser.parse('1970-01-01 00:00:00') and update_date == parser.parse('1970-01-01 00:00:00') and create_date == parser.parse('1970-01-01 00:00:00') and len(urlObj.netloc.split('.')) > 1:
             #print urlObj.scheme + '://' + urlObj.netloc.split('.',1)[1]
             #print retdata
             return checkWhois(urlObj.scheme + '://' + urlObj.netloc.split('.',1)[1])
@@ -49,7 +49,7 @@ def checkWhois(url):
             return dict([('expire_date', expire_date), ('update_date', update_date), ('create_date', create_date), ('registrant', registrant)])
         #return dict([('expire_date', expire_date), ('update_date', update_date), ('create_date', create_date), ('registrant', registrant)])
     except Exception, e:
-        return dict([('expire_date', parser.parse('1970-01-01 00:00:00')), ('update_date', parser.parse('1970-01-01 00:00:00')), ('create_date', parser.parse('1970-01-01 00:00:00')), ('registrant', '')])
+        return dict([('expire_date', parser.parse('1970-01-01 00:00:00')), ('update_date', parser.parse('1970-01-01 00:00:00')), ('create_date', parser.parse('1970-01-01 00:00:00')), ('registrant', 'N/A')])
 
 def main():
     print checkWhois('http://twitter.com/cnnbrk') #   test one time redirecting
