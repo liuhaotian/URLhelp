@@ -41,8 +41,13 @@ def checkWhois(url):
         except Exception, e:
             registrant  = ''
         
-
-        return dict([('expire_date', expire_date), ('update_date', update_date), ('create_date', create_date), ('registrant', registrant)])
+        if registrant  == '' and expire_date == parser.parse('1970-01-01 00:00:00') and update_date == parser.parse('1970-01-01 00:00:00') and create_date == parser.parse('1970-01-01 00:00:00') and len(urlObj.netloc.split('.')) > 1:
+            #print urlObj.scheme + '://' + urlObj.netloc.split('.',1)[1]
+            #print retdata
+            return checkWhois(urlObj.scheme + '://' + urlObj.netloc.split('.',1)[1])
+        else:
+            return dict([('expire_date', expire_date), ('update_date', update_date), ('create_date', create_date), ('registrant', registrant)])
+        #return dict([('expire_date', expire_date), ('update_date', update_date), ('create_date', create_date), ('registrant', registrant)])
     except Exception, e:
         return dict([('expire_date', parser.parse('1970-01-01 00:00:00')), ('update_date', parser.parse('1970-01-01 00:00:00')), ('create_date', parser.parse('1970-01-01 00:00:00')), ('registrant', '')])
 
