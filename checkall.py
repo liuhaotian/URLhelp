@@ -24,7 +24,7 @@ def main(tid = 0):
     if tid == 0:
         therange = range(len(urls))
     else:
-        therange = range(10 * (tid - 1), 10 * tid)
+        therange = range(400 * (tid - 1), 400 * tid)
 
     results = []
     for i in therange:
