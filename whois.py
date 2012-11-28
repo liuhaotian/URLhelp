@@ -54,7 +54,7 @@ def findhost(rawdata):
     "whois.iana.org"]
     try:
         #server = re.search(r'Whois Server:[^\w]*([\.\w]*)',rawdata).groups()[0]
-        return re.search(r'Whois Server:[^\w]*([\.\w]*)',rawdata).groups()[0]
+        return re.search(r'Whois Server:[^\w]*([\.\w-]*)',rawdata).groups()[0]
     except Exception, e:
         return None
 '''
