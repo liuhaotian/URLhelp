@@ -49,7 +49,7 @@ def main(tid = 0):
     for SBlabel, rank, eachresult in zip(SBlabels, ranks, results):
         eachresult['SBlabel'] = SBlabel
         eachresult['rank']  = rank
-        fout.write('%d\t%s\t%d\t%d\t%d\t%s\t%s\t%s\t%s\t%s\n' % (len(eachresult['ips']), eachresult['ptr'], eachresult['num_ns'], eachresult['num_mx'], eachresult['rank'], eachresult['thewhoisdict']['create_date'].isoformat()[:19], eachresult['thewhoisdict']['update_date'].isoformat()[:19], eachresult['thewhoisdict']['expire_date'].isoformat()[:19], eachresult['thewhoisdict']['registrant'], eachresult['redirecturl']))
+        fout.write('%s\t%d\t%s\t%d\t%d\t%d\t%s\t%s\t%s\t%s\t%s\n' % (eachresult['SBlabel'], len(eachresult['ips']), eachresult['ptr'], eachresult['num_ns'], eachresult['num_mx'], eachresult['rank'], eachresult['thewhoisdict']['create_date'].isoformat()[:19], eachresult['thewhoisdict']['update_date'].isoformat()[:19], eachresult['thewhoisdict']['expire_date'].isoformat()[:19], eachresult['thewhoisdict']['registrant'], eachresult['redirecturl']))
 
 
 
