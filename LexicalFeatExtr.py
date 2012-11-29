@@ -19,7 +19,7 @@ class LexicalFeature:
     #file_output=open("/home/zyqu/MachineLearning/group_proj/URLhelp/BenighLexicalFeatures","w")
     #file_output=open("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/LexicalFeatures","w")
     #file_output=open("/home/zyqu/MachineLearning/group_proj/URLhelp/LexicalFeatures","w")
-    file_output=open("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/BenighLexicalFeatures","w")
+    file_output=open("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/MalwareLexicalFeatures","w")
 
     try:
       list_of_all_the_lines = file_input.readlines()
@@ -275,5 +275,5 @@ if __name__=="__main__":
   #lexfeatures=LexicalFeature("/Users/quzhengyang/Study/MachineLearning/group_proj/LexcialExtraction/testurl")
   #lexfeatures=LexicalFeature("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/new_list")
   #lexfeatures=LexicalFeature("/home/zyqu/MachineLearning/group_proj/URLhelp/benign_list")
-  lexfeatures=LexicalFeature("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/benign_list")
+  lexfeatures=LexicalFeature("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/malware_list")
   lexfeatures.GetFeature()
