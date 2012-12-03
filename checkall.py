@@ -28,11 +28,12 @@ def main(tid = 0):
 
     results = []
     for i in therange:
+        oneresult = dict()
         url = urls[i]
+        oneresult['url'] = url
         if 'http' not in url[:6]:
             url = 'http://' + url
             urls[i] = url
-        oneresult = dict()
         oneresult['redirecturl'] = checkRedirect(url)
         oneresult['thewhoisdict'] = checkWhois(oneresult['redirecturl'])
         oneresult['ips'] = checkIP(oneresult['redirecturl'])
@@ -49,7 +50,7 @@ def main(tid = 0):
     for SBlabel, rank, eachresult in zip(SBlabels, ranks, results):
         eachresult['SBlabel'] = SBlabel
         eachresult['rank']  = rank
-        fout.write('%s\t%d\t%s\t%d\t%d\t%d\t%s\t%s\t%s\t%s\t%s\n' % (eachresult['SBlabel'], len(eachresult['ips']), eachresult['ptr'], eachresult['num_ns'], eachresult['num_mx'], eachresult['rank'], eachresult['thewhoisdict']['create_date'].isoformat()[:19], eachresult['thewhoisdict']['update_date'].isoformat()[:19], eachresult['thewhoisdict']['expire_date'].isoformat()[:19], eachresult['thewhoisdict']['registrant'], eachresult['redirecturl']))
+        fout.write('%s\t%d\t%s\t%d\t%d\t%d\t%s\t%s\t%s\t%s\t%s\t%s\n' % (eachresult['SBlabel'], len(eachresult['ips']), eachresult['ptr'], eachresult['num_ns'], eachresult['num_mx'], eachresult['rank'], eachresult['thewhoisdict']['create_date'].isoformat()[:19], eachresult['thewhoisdict']['update_date'].isoformat()[:19], eachresult['thewhoisdict']['expire_date'].isoformat()[:19], eachresult['thewhoisdict']['registrant'], eachresult['redirecturl'], eachresult['url']))
 
 
 
