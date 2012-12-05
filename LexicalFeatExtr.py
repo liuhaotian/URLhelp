@@ -2,7 +2,7 @@
 
 #Zhengyang Qu,
 #Department of EECS, Northwestern University
-#11/25/2011
+#12/4/2011
 #make sure setting the dir of input/output file before using the program
 
 import urllib2
@@ -268,6 +268,141 @@ class LexicalFeature:
         label=1
     return label
 
+  def SingleURLLexicalFeatExtr(self, line):
+        line=self.decoding(line)
+        urlline=line.lower()
+        urlline=urlline.strip()
+        containIP=1
+        p=re.compile('[0-9]{3}(?:\.[0-9]+){3}')
+        if p.search(urlline)==None:
+          containIP=0
+        if urlline.find("http://")>=0:
+          urlline=urlline[7:]
+        if urlline.find("https://")>=0:
+          urlline=urlline[8:]
+        if urlline.find("www.")==0:
+          urlline=urlline[4:]
+        if urlline.find('/')>0:
+          hostportion=urlline[:urlline.find('/')]
+          pathportion=urlline[urlline.find('/')+1:]
+        if urlline.find('/')<=0:
+          hostportion=urlline
+          pathportion=""
+          
+        # the length of host portion
+        lenhost=len(hostportion) 
+        
+        # the length of urllink
+        lenurl=len(urlline)
+        
+        # the number of dots in url
+        numofdots=self.GetNumofSpecChar('.',urlline)
+        
+        #get top-level domain
+        TLD=self.GetTLD(hostportion) 
+        
+        bagofwordsinhost=[]
+        bagofwordsinpath=[]
+        tempstring=hostportion
+        
+        #get the bag-of-words in host portion
+        bagofwordsinhost=self.GetBagofWords(hostportion)
+        #get the bag-of-words in path portion
+        bagofwordsinpath=self.GetBagofWords(pathportion)
+        
+        # make sure whether url tokes contain sensitive key words
+        containKeyW=0
+        if self.containkeyword(bagofwordsinhost)==1 or self.containkeyword(bagofwordsinpath)==1:
+          containKeyW=1
+        
+        #get the count of domain token
+        domaintokencount=self.GetTokenCount(self.GetDomainToken(bagofwordsinhost))
+        domaintokencount=domaintokencount+self.GetTokenCount(self.GetDomainToken(bagofwordsinpath))
+         
+        #get the path token count
+        pathtokencount=self.GetTokenCount(bagofwordsinpath)
+        #get the average domain token length
+        if domaintokencount==0:
+          avrdomaintokenlength=0
+        if domaintokencount>0:
+          avrdomaintokenlength=(self.GetTotalTokenLength(self.GetDomainToken(bagofwordsinhost))+self.GetTotalTokenLength(self.GetDomainToken(bagofwordsinpath)))/(self.GetTokenCount(self.GetDomainToken(bagofwordsinhost))+self.GetTokenCount(self.GetDomainToken(bagofwordsinpath)))
+        
+        #get the average path token length
+        if pathtokencount==0:
+          avrpathtokenlength=0
+        if pathtokencount>0:
+          avrpathtokenlength=self.GetTotalTokenLength(bagofwordsinpath)/self.GetTokenCount(bagofwordsinpath)
+        
+        #get the longest domain token length
+        if self.GetLongestTokenLength(self.GetDomainToken(bagofwordsinhost))>=self.GetLongestTokenLength(self.GetDomainToken(bagofwordsinpath)):
+          longestdomaintokenlength=self.GetLongestTokenLength(self.GetDomainToken(bagofwordsinhost))
+        if self.GetLongestTokenLength(self.GetDomainToken(bagofwordsinhost))<self.GetLongestTokenLength(self.GetDomainToken(bagofwordsinpath)):
+          longestdomaintokenlength=self.GetLongestTokenLength(self.GetDomainToken(bagofwordsinpath))
+          
+        #get the longest path token length
+        longestpathtokenlength=self.GetLongestTokenLength(bagofwordsinpath)
+        
+        #get whether the url contains brands in position other than SLD
+        brandpresence=self.isBrandPresence(bagofwordsinhost,bagofwordsinpath)
+        
+        
+        
+        output=''
+        outstr = "%s"%lenhost
+        output+=outstr
+        output+=' '
+        outstr = "%s"%lenurl
+        output+=outstr
+        output+=' '
+        outstr = "%s"%numofdots
+        output+=outstr
+        output+=' '
+        output+=TLD
+        output+=' '
+        outstr = "%s"%domaintokencount
+        output+=outstr
+        output+=' '
+        outstr = "%s"%pathtokencount
+        output+=outstr
+        output+=' '
+        outstr = "%s"%avrdomaintokenlength
+        output+=outstr
+        output+=' '
+        outstr = "%s"%avrpathtokenlength
+        output+=outstr
+        output+=' '
+        outstr = "%s"%longestdomaintokenlength
+        output+=outstr
+        output+=' '
+        outstr = "%s"%longestpathtokenlength
+        output+=outstr
+        output+=' '
+        outstr = "%s"%brandpresence
+        output+=outstr
+        output+=' '
+        outstr = "%s"%containIP
+        output+=outstr
+        output+=' '
+        outstr = "%s"%containKeyW
+        output+=outstr
+        output+=' '
+
+        for elem in bagofwordsinhost:
+          if elem != '':
+            output+='<1,'
+            output+=elem
+            output+='> '
+        for elem in bagofwordsinpath:
+          if elem != '':
+            output+='<2,'
+            output+=elem
+            output+='> '
+       
+        output+='\n'
+        #print output
+        return output
+   
+
       
       
 if __name__=="__main__":
@@ -277,3 +412,6 @@ if __name__=="__main__":
   #lexfeatures=LexicalFeature("/home/zyqu/MachineLearning/group_proj/URLhelp/benign_list")
   lexfeatures=LexicalFeature("/Users/quzhengyang/Study/MachineLearning/group_proj/URLhelp/malware_list")
   lexfeatures.GetFeature()
+  #lexfeatures.SingleURLLexicalFeatExtr('http://el28frenteamplio.org//wp-includes/pomo/mail.yahoo.com/login_verify2.htm')
+  #lexfeatures.SingleURLLexicalFeatExtr('http://www.badlit.com/')
+  #lexfeatures.SingleURLLexicalFeatExtr('securelive.co.kr')
