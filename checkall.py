@@ -43,8 +43,8 @@ def main(tid = 0):
         #oneresult['rank'] = checkRank([oneresult['redirecturl']])[0]
 
         #fout.write('%d\t%s\t%d\t%d\t%d\t%s\t%s\t%s\t%s\t%s\t%s\n' % (len(ips), ptr, num_ns, num_mx, rank, thewhoisdict['create_date'].isoformat(), thewhoisdict['update_date'].isoformat(), thewhoisdict['expire_date'].isoformat(), thewhoisdict['registrant'], redirecturl, url))
-        fout.write('%d\t%d\t%d\t%s\t%s\t%s\t\n' % (len(oneresult['ips']), oneresult['num_ns'], oneresult['num_mx'], oneresult['ptr'], oneresult['redirecturl'], urls[i]))
-        #print '%d\t%d\t%d\t%s\t%s\t%s\t\n' % (len(oneresult['ips']), oneresult['num_ns'], oneresult['num_mx'], oneresult['ptr'], oneresult['redirecturl'], urls[i])
+        fout.write('%d\t%d\t%d\t%s\t%s\t%s\r\n' % (len(oneresult['ips']), oneresult['num_ns'], oneresult['num_mx'], oneresult['ptr'], oneresult['redirecturl'], urls[i]))
+        #print '%d\t%d\t%d\t%s\t%s\t%s\r\n' % (len(oneresult['ips']), oneresult['num_ns'], oneresult['num_mx'], oneresult['ptr'], oneresult['redirecturl'], urls[i])
         results += [oneresult]
 '''
     SBlabels = checkGoogleSB([eachresult['redirecturl'] for eachresult in results])
