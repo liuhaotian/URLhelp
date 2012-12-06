@@ -8,12 +8,14 @@
 #
 
 from urlparse import urlparse
-import dns.resolver
+import subprocess
 
 def checkMX(url):
     try:
         urlObj  = urlparse(url)
-        return len(dns.resolver.query(urlObj.netloc, 'MX'))
+        mxdata  = subprocess.check_output(['dig','-t','MX', urlObj.netloc])
+        return len([x for x in mxdata.split('\n') if 'MX' in x and ';' not in x])
+        #return len(resolver.query(urlObj.netloc, 'MX'))
     except Exception, e:
         return 0
 
