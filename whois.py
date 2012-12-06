@@ -16,6 +16,7 @@ def whois(domain, host = None):
         HOST = host
     PORT = 43 
 
+    socket.setdefaulttimeout(2)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((HOST, PORT))
     s.sendall(domain + '\r\n')

@@ -12,6 +12,7 @@ import socket
 
 def checkIP(url):
     try:
+        socket.setdefaulttimeout(2)
         urlObj  = urlparse(url)
         return [x[4][0] for x in socket.getaddrinfo(urlObj.netloc,80) if ':' not in x[4][0]]
     except Exception, e:

@@ -13,7 +13,7 @@ from urlparse import urlparse
 def checkRedirect(url):
     try:
         urlObj = urlparse(url)
-        conn = httplib.HTTPConnection(urlObj.netloc)
+        conn = httplib.HTTPConnection(urlObj.netloc, timeout=2)
         agent = { 'User-Agent' : 'Mozilla/5.0' }
         conn.request("HEAD", url.lstrip(urlObj.scheme).lstrip('://').lstrip(urlObj.netloc), headers=agent)
         res = conn.getresponse()

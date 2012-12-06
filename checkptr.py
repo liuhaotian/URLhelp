@@ -12,6 +12,7 @@ import socket
 
 def checkPTR(url):
     try:
+        socket.setdefaulttimeout(2)
         urlObj  = urlparse(url)
         #return socket.getfqdn(urlObj.netloc) == urlObj.netloc
         allips  = [x[4][0] for x in socket.getaddrinfo(urlObj.netloc,80) if ':' not in x[4][0]]
