@@ -8,12 +8,14 @@
 #
 
 from urlparse import urlparse
-import dns.resolver
+import subprocess
 
 def checkNS(url):
     try:
         urlObj  = urlparse(url)
-        return len(dns.resolver.query(urlObj.netloc, 'NS'))
+        mxdata  = subprocess.check_output(['dig','-t','NS', urlObj.netloc])
+        return len([x for x in mxdata.split('\n') if 'NS' in x and ';' not in x])
+        #return len(resolver.query(urlObj.netloc, 'NS'))
     except Exception, e:
         return 0
 
