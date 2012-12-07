@@ -1,15 +1,162 @@
+<!doctype html>
+<html lang="us">
 <head>
+	<meta charset="utf-8">
 	<title>EECS 349 Machine Learning | URLhelp</title>
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
-	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+	<link href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <script>
+    $(function() {
+        $( "#tabs" ).tabs({
+            event: "mouseover"
+        }).addClass( "ui-tabs-vertical ui-helper-clearfix" );
+        $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+    });
+    </script>
+    <style>
+    .ui-tabs-vertical { width: 61em; }
+    .ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 18em; }
+    .ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
+    .ui-tabs-vertical .ui-tabs-nav li a { display:block; }
+    .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
+    .ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 40em;}
+    </style>
 </head>
 <body>
 	<table align='center' width='600px'><tr><td>
-		<h1>URLhelp</h1>
-		<h2>Abstract</h2>
-		<p>Malicious Web sites largely promote the growth of Internet criminal activities and constrain the development of Web services. As a result, there has been strong motivation to develop systemic solution to stopping the user from visiting such Web sites. In this paper, we propose a learning based approach to classifying Web sites into 3 classes: benign, phishing, and malware. Our mechanism only analyzes the Uniform Resource Locator (URL) itself without accessing the content of Web sites. Thus, it eliminates the run-time latency and the possibility of exposing users to the browser- based vulnerabilities. By employing learning algorithms, our scheme achieves better performance on generality and cover- age compared with blacklisting service. Through extensive evaluation, the resulting classifiers obtain 95.3% accuracy on detecting malicious Web sites with only 2.5% false positive rate.</p>
-		<h2>People</h2>
-		<p>Haotian Liu <BR> Xiang Pan <BR> Zhengyang Qu </p>
+	<center>
+		<h1>Learning based Malicious Web Sites Detection using Suspicious URLs</h1>
+		<p>Haotian Liu, Xiang Pan, Zhengyang Qu</p>
+		<p>Department of Electrical Engineering and Computer Science</p>
+		<p>Northwestern University, IL, USA</p>
+		<p>Email: {haotianliu2011, xiangpan2011, zhengyangqu2017}@u.northwestern.edu</p>
+	</center>
+	<div id="tabs">
+		<ul>
+			<li><a href="#ABSTRACT" style="width:16em;">ABSTRACT</a></li>
+			<li><a href="#INTRODUCTION" style="width:16em;">INTRODUCTION</a></li>
+			<li><a href="#APPROACHIMPLEMENTATION" style="width:16em;">APPROACH & IMPLEMENTATION</a></li>
+			<li><a href="#EVALUATION" style="width:16em;">EVALUATION</a></li>
+			<li><a href="#RELATEDWORKS" style="width:16em;">RELATED WORKS</a></li>
+			<li><a href="#CONCLUSION" style="width:16em;">CONCLUSION</a></li>
+			<li><a href="#REFERENCES" style="width:16em;">REFERENCES</a></li>
+			<li><a href="#DOWNLOAD" style="width:16em;">DOWNLOAD</a></li>
+		</ul>
+		<div id="ABSTRACT">
+			<h2>ABSTRACT</h2>
+				<p>Malicious Web sites largely promote the growth of Internet criminal activities and constrain the development of Web services. As a result, there has been strong motivation to develop systemic solution to stopping the user from visiting such Web sites. In this paper, we propose a learning based approach to classifying Web sites into 3 classes: benign, phishing, and malware. Our mechanism only analyzes the Uniform Resource Locator (URL) itself without accessing the content of Web sites. Thus, it eliminates the run-time latency and the possibility of exposing users to the browser-based vulnerabilities. By employing learning algorithms, our scheme achieves better performance on generality and coverage compared with blacklisting service. Through extensive evaluation, the resulting classifiers obtain 95.8% accuracy on detecting malicious Web sites with only 4.3% false positive rate.</p>
+		</div>
+		<div id="INTRODUCTION">
+			<h2>1. INTRODUCTION</h2>
+				<p>Web applications all around the world become popular and bring people convenience, while there is a rapid growth in the number of attacks from various criminal enterprises, such as financial fraud and spam-advertised commerce. The common thread among those attacks is the requirement that unsuspecting users visit the sites, clicking the target Uniform Resource Locator (URL).</p>
+				<p>If we can be informed of the properties of the target URL in advance, in other words, whether it is dangerous or not, such problems will be largely resolved. Thus, many security communities have provided blacklisting service, which is based on various techniques including manual reporting, and Web crawlers with site analysis heuristics. However, a large portion of malicious web sites are too new to be checked or have not been blacklisted, due to the limited coverage capacity of blacklist compared with the huge number of Web sites. Besides, some client-side systems analyze the content of Web sites when they are visited, which employs run-time latency and exposes users to the browser-based vulnerabilities.</p>
+				<p>To address this problem, we develop a mechanism based on machine learning. Given the properties achieved by some techniques, it is capable of classifying URL intelligently without the client-side latency and approaching Web content on demand. Our work makes the following contributions:</p>
+				<ul>
+					<li>We formulate the model and extract features which are effective in URL classification.</li>
+					<li>Our mechanism can predict whether the target URL is malicious precisely without detecting web content that incurs run-time latency. It achieves 95.3% accuracy on detecting malicious Web sites with only 2.5% false positive rate.</li>
+					<li>We implement and compare various classification algorithms, e.g. SVM, Logistic Regression, and Decision Tree.</li>
+				</ul>
+				<p>The rest of this paper is organized as follows: We discuss details of our approach to URL classification and the corresponding implementation in section 2. Section 3 presents the evaluation of our mechanism. We review related works in section 4. Finally, section 5 concludes this paper.</p>
+		</div>
+		<div id="APPROACHIMPLEMENTATION">
+			<h2>2. APPROACH & IMPLEMENTATION</h2>
+				<p>URLs of the websites are separated into 3 classification:</p>
+				<p><b>Benign</b>: Safe websites with normal services</p>
+				<p><b>Phishing</b>: Website performs the act of attempting to get information such as usernames, passwords, and credit card details by masquerading as a trustworthy entity in an electronic communication.</p>
+				<p><b>Malware</b>: Website created by attackers to disrupt computer operation, gather sensitive information, or gain access to private computer systems.</p>
+			<h3>2.1 Feature Extraction</h3>
+				<p>Given single URL, we extract its features and categorize them into 3 classes:</p>
+				<p><b>Lexical Features</b>: Lexical features are based on the observation that the URLs of many illegal sites look “different”, compared with legitimate sites. Analyzing lexical features enables us to capture the property for classification purposes. We first distinguish the two parts of a URL: the hostname and the path, from which we extract bag-of-words (strings delimited by ‘/’, ‘?’, ‘.’, ‘=’, ‘-’ and ‘ ’) . Then we get the properties listed in Table I. Based on our study on 7071 URLs of phishing websites, 20976 URLs of benign websites, and 9285 URLs of malware websites, we find that phishing website prefers to have longer URL, more levels (delimited by dot), more tokens in domain and path, longer token. Thus, we choose the features 1, 2, 3, 5, 6, 7, 8, 9, 10 in Table I. Moreover, the top-level domain contains key information of the website, such as whether the website belongs to a commercial organization and in which country the website is registered. We extract the top-level domain in URL and transform the String to Integer by checking a hash map. Besides, phishing and malware websites could pretend to be a benign one by containing popular brand names as tokens other than those in second-level domain. Considering phishing websites and malware websites may use IP address directly so as to cover the suspicious URL, which is very rare in benign case, we extract feature 12 in Table 1. Also, phishing URLs are found to contain several suggestive word tokens (confirm, account, banking, secure, ebayisapi, webscr, login, signin), we check the presence of these security sensitive words and include the binary value in our features.</p>
+				<p><b>Host-based Features</b>: Host-based features are based on the observation that many illegal sites choose less reputable hosting centers or disreputable registrars.</p>
+				<p><b>Site popularity Features</b>: The reason for using these features is that malicious sites tend to be less popular than benign ones. One import feature among site population fea- tures is the number of links from outside.</p>
+				<table align='center' border="1">
+					<center>Table 1: Lexical Features</center>
+					<tr><td>NO. </td><td> Feature </td><td> Type </td></tr>
+					<tr><td>1 </td><td> Length of hostname </td><td> Integer</td></tr>
+					<tr><td>2 </td><td> Length of entire URL </td><td> Integer</td></tr>
+					<tr><td>3 </td><td> Number of dots in URL </td><td> Integer</td></tr>
+					<tr><td>4 </td><td> Top-level domain </td><td> Integer  </td></tr>
+					<tr><td>5</td><td>Domain token count</td><td> Integer</td></tr>
+					<tr><td>6 </td><td> Path token count </td><td> Integer </td></tr>
+					<tr><td>7 </td><td> Average domain token length</td><td> Real</td></tr>
+					<tr><td>8 </td><td> Average path token length </td><td> Real</td></tr>
+					<tr><td>9 </td><td> Longest domain token length </td><td> Integer</td></tr>
+					<tr><td>10 </td><td> Longest path token length </td><td> Integer</td></tr>
+					<tr><td>11 </td><td> Brand name presence </td><td> Binary</td></tr>
+					<tr><td>12 </td><td> IP address presence </td><td> Binary</td></tr>
+					<tr><td>13 </td><td> Security sensitive word presence </td><td> Binary</td></tr>
+				</table>
+				<center>
+					<img src="figure1.png" width="600px" align='center'>
+					<p>Figure 1: Detection Accuracy for each group of features</p>
+				</center>
+			<h3>2.2 Date Set</h3>
+				<p>We randomly collect 29,276 benign URLs from DMOZ Open Directory Project1. DMOZ is one of the largest human- edited directory of the world. It classifies URLs into differ- ent categories. Thus, random selection can guarantee our dataset ranging over different areas. As for phishing URLs, we collect 7,071 samples from PhishTank2, a collaborative site where people can submit and verify phishing URLs. Be-sides, we select 9,285 URLs from DNS-BH pro ject3 , a site creating and maintaining a list of domains known to be used to propagate malware and spyware. People can download the list for free.</p>
+			<h3>2.3 Training</h3>
+				<p>All of URLs in the dataset are labeled. We use 5-fold method to train-test our systems. Before training, we pre- process the features not consistent with others. For example, the range of traffic range is much larger than that of other features. We map the feature into a much smaller range and it turns out to significantly increase the accuracy. We also use Chi-Square test and virtualization tool in Weka to select most informative features. After selecting features, we use three learning algorithms-J48 decision tree, logistic regression and support vector machine to train dataset.</p>
+		</div>
+		<div id="EVALUATION">
+			<h2>3. EVALUATION</h2>
+			<h3>3.1 Feature Comparison</h3>
+				<p>In order to find how much each feature improves/reduces the performance of our mechanism on classification accu- racy, we separate the features into 3 groups as lexical fea- tures, popularity features, and host features. Given each feature group, we utilize 3 learning algorithms as SVM, Lo- gistic Regression (LR), and Decision Tree (DT) and get the classification results. From Figure 1, we can see that lexical features contributes the most the classification performance among the 3 groups of features. Moreover, the effect of pop- ularity features on classification accuracy will be improved when DT is utilized.</p>
+			<h3>3.2 Learning Algorithm Comparison</h3>
+				<p>Given the features we extract and collect, we are moti- vated to compare the performance of the 3 learning algo- rithms on classification. From Figure 2, the DT algorithm achieves the best classification accuracy 95.8 % with the least run time latency, which is caused by our careful fea- ture selection. Compared with DT, the time latency of SVM is too high and the classification accuracy of LR is relatively low. So we decide to choose DT learning algorithm in our system.</p>
+				<p>Besides, we conduct extensive evaluation of the classifica- tion performance on each class of URLs and the whole data set by recording the true positive rate (TPR) and false pos- itive rate (FPR) when each algorithm is utilized. In Table 2, we can see that even if DT has the best performance in general, LR can obtain the 100% TPR and 0% FPR when dealing with malware Web sites. Consequently, a hybrid learning algorithm combining DT and LR could further en- hance the performance of URL classification, which belongs to our future work.</p>
+				<table align='center' border="1">
+					<center>Table 2: True Positive Rate (FPR) & False Positive Rate (FPR)</center>
+					<tr><td></td><td colspan="4">DT</td></tr>
+					<tr><td></td><td>Benign</td><td>Malware</td><td>Phishing</td><td>All</td>
+					</tr>
+					<tr><td>TPR</td><td>97.1%</td><td>97.2%</td><td>88.3%</td><td>95.8%</td>
+					</tr>
+					<tr><td>FPR</td><td>6.2%</td><td>1.1%</td><td>1.3%</td><td>4.3%</td>
+					</tr>
+
+					<tr><td></td><td colspan="4"> SVM </td></tr>
+					<tr><td></td><td>Benign</td><td>Malware</td><td>Phishing</td><td>All</td>
+					</tr>
+					<tr><td>TPR</td><td>96.9%</td><td>96.3%</td><td>88.1%</td><td>95.4%</td>
+					</tr>
+					<tr><td>FPR</td><td>6.4%</td><td>0.5%</td><td>2.2%</td><td>4.5%</td>
+					</tr>
+
+					<tr><td></td><td colspan="4">LR</td></tr>
+					<tr><td></td><td>Benign</td><td>Malware</td><td>Phishing</td><td>All</td>
+					</tr>
+					<tr><td>TPR</td><td>96.7%</td><td>100%</td><td>80.8%</td><td>95.0%</td>
+					</tr>
+					<tr><td>FPR</td><td>8%</td><td>0%</td><td>2.4%</td><td>5.4%</td>
+					</tr>
+				</table>
+				<center>
+					<img src="figure2.png" width="600px" align='center'>
+					<p>Figure 2: Classification Accuracy and Time Latency</p>
+				</center>
+		</div>
+		<div id="RELATEDWORKS">
+			<h2>4. RELATED WORKS</h2>
+				<p>Garera et al. use logistic regression over 18 hand-selected features to classify maclious URLs [1]. The features in- clude the presence red flag key works in the URL, which are based on Google’s page rank and web page quality guide- lines. Zheng et a. propose a approach to classify phishing URLs by thresholding a weighted sum of 8 features [2], in- cluding 3 lexical features, 4 content-related features, and 1 WHOIS-related feature.</p>
+				<p>The authors use statistical methods in machine learning to classify phishing emails [3], where the classifier examines the properties of URLs contained in a message (number of domains, number of dots in URL). Bergholz et a. further improve the accuracy of the mechanism in [3] by introducing models of text classification to analyze email content [4].</p>
+		</div>
+		<div id="CONCLUSION">
+			<h3>5. CONCLUSION</h3>
+				<p>We propose a learning based approach to separating Web sites into 3 classes: benign, phishing, and malware. The analysis is only based on URL itself without accessing the target website, which removes the run-time latency and pro- tect user from being exposed to browser-based vulnerabili- ties. We argue that this approach is complementary to both blacklisting and the systems based on evaluating site content and behavior. By carefully selecting features and learning algorithms, our system achieves 95.3% accuracy on detecting malicious Web sites with only 2.5% false positive rate.</p>
+		</div>
+		<div id="REFERENCES">
+			<h2>6. REFERENCES</h2>
+			<p>[1] S. Garera, N. Provos, M. Chew, and A. D. Rubin. A Framework for Detection and Measurement of Phishing Attacks. In Proceedings of the ACM Workshop on Rapid Malcode (WORM), Alexandria, VA, Nov. 2007. http://web.cs.jhu.edu/ sdoshi/index files/p1- garera.pdf</p>
+			<p>[2] Y. Zhang, J. Hong, and L. Cranor. CANTINA: A Content-Based Approach to Detecting Phishing Web Sites. In Proceedings of the International World Wide Web Conference (WWW), Banff, Alberta, Canada, May 2007. http://www.cs.cmu.edu/ jasonh/publications/www2007-cantina-final.pdf</p>
+			<p>[3] I. Fette, N. Sadeh, and A. Tomasic. Learning to Detect Phishing Emails. In Proceedings of the International World Wide Web Conference (WWW), Banff, Alberta, Canada, May 2007. http://www.dtic.mil/cgi- bin/GetTRDoc?AD=ADA456046</p>
+			<p>[4] A. Bergholz, J. H. Chang, G. Paaß, F. Reichartz, and S. Strobel. Improved Phishing Detection using Model-Based Features. In Proceedings of the Conference on Email and Anti-Spam (CEAS), Mountain View, CA, Aug. 2008. http://www.ceas.cc/2008/papers/ceas2008-paper-44.pdf</p>
+
+		</div>
+		<div id="DOWNLOAD">
+			<h2>DOWNLOAD</h2>
+			<p>paper:<a href="HTXPZYQ.pdf">HTXPZYQ.pdf</a>
+			</p>
+		</div>
+	</div>
 	</td> </tr> </table>
 </body>
+</html>

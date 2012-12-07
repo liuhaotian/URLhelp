@@ -22,6 +22,7 @@ class cssHandler(webapp2.RequestHandler):
         #self.response.write('pic')
         try:
             self.response.write(open('www' + self.request.path).read())
+            self.response.headers['Content-Type'] = 'text/css'
         except Exception, e:
             pass
 
@@ -30,6 +31,7 @@ class jsHandler(webapp2.RequestHandler):
         #self.response.write('pic')
         try:
             self.response.write(open('www' + self.request.path).read())
+            self.response.headers['Content-Type'] = 'text/javascript'
         except Exception, e:
             pass
 
