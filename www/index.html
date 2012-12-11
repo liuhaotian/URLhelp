@@ -3,25 +3,33 @@
 <head>
 	<meta charset="utf-8">
 	<title>EECS 349 Machine Learning | URLhelp</title>
-	<link href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" rel="stylesheet">
-    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-    <script>
-    $(function() {
-        $( "#tabs" ).tabs({
-            event: "mouseover"
-        }).addClass( "ui-tabs-vertical ui-helper-clearfix" );
-        $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
-    });
-    </script>
-    <style>
-    .ui-tabs-vertical { width: 61em; }
-    .ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 18em; }
-    .ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
-    .ui-tabs-vertical .ui-tabs-nav li a { display:block; }
-    .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
-    .ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 40em;}
-    </style>
+	<link href="http://code.jquery.com/ui/1.9.2/themes/eggplant/jquery-ui.css" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+	<script>
+	$(function() {
+		$( "#tabs" ).tabs({
+			event: "mouseover"
+		}).addClass( "ui-tabs-vertical ui-helper-clearfix" );
+		$( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+		$( ".figure" ).tooltip();
+	});
+	</script>
+	<style>
+	.ui-tabs-vertical { width: 61em; }
+	.ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 18em; }
+	.ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
+	.ui-tabs-vertical .ui-tabs-nav li a { display:block; }
+	.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
+	.ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 40em;}
+	</style>
+	<style type="text/css">
+		body{
+			font-family: "Helvetica Neue",HelveticaNeue,Helvetica,Arial,sans-serif;
+			background-color: rgb(51, 51, 51);
+			color: rgb(204,204,204);
+		}
+	</style>
 </head>
 <body>
 	<table align='center' width='600px'><tr><td>
@@ -46,6 +54,10 @@
 		<div id="ABSTRACT">
 			<h2>ABSTRACT</h2>
 				<p>Malicious Web sites largely promote the growth of Internet criminal activities and constrain the development of Web services. As a result, there has been strong motivation to develop systemic solution to stopping the user from visiting such Web sites. In this paper, we propose a learning based approach to classifying Web sites into 3 classes: benign, phishing, and malware. Our mechanism only analyzes the Uniform Resource Locator (URL) itself without accessing the content of Web sites. Thus, it eliminates the run-time latency and the possibility of exposing users to the browser-based vulnerabilities. By employing learning algorithms, our scheme achieves better performance on generality and coverage compared with blacklisting service. Through extensive evaluation, the resulting classifiers obtain 95.8% accuracy on detecting malicious Web sites with only 4.3% false positive rate.</p>
+				<center>
+					<img class="figure" src="figure0.png" idth="600px" align="center" title="Safari built in phinshing detection">
+				</center>
+				
 		</div>
 		<div id="INTRODUCTION">
 			<h2>1. INTRODUCTION</h2>
@@ -88,7 +100,7 @@
 					<tr><td>13 </td><td> Security sensitive word presence </td><td> Binary</td></tr>
 				</table>
 				<center>
-					<img src="figure1.png" width="600px" align='center'>
+					<img class="figure" src="figure1.png" width="600px" align='center' title='Figure 1: Detection Accuracy for each group of features'>
 					<p>Figure 1: Detection Accuracy for each group of features</p>
 				</center>
 			<h3>2.2 Date Set</h3>
@@ -130,7 +142,7 @@
 					</tr>
 				</table>
 				<center>
-					<img src="figure2.png" width="600px" align='center'>
+					<img class="figure" src="figure2.png" width="600px" align='center' title="Figure 2: Classification Accuracy and Time Latency">
 					<p>Figure 2: Classification Accuracy and Time Latency</p>
 				</center>
 		</div>
